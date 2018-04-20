@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>wstest</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
+	
+	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/emojify.js/1.1.0/css/basic/emojify.min.css" />
+	<script src="//cdnjs.cloudflare.com/ajax/libs/emojify.js/1.1.0/js/emojify.min.js"></script>
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.0/socket.io.js"></script>
+	<script src="/static/chat.js"></script>
+	<style>
+		html,
+		body {
+			height: 100%;
+		}
+
+		.mes {
+			display: inline;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="container" style="height: 80vh; padding-top: 30px;">
+		<div class="row" style="height: 100%; ">
+			<div class="col-md-6 offset-md-3" style="height: 100%">
+				<div class="row">
+					<div class="col-md-3 pull-right" style="padding-bottom: 10px;">
+						<input id="username" autocomplete="off" type="text" class="form-control" placeholder="UserName">
+					</div>
+				</div>
+				<div id="mes_text" class="well well-sm heig " style="height: 90%; margin-bottom: 15px; overflow-y: scroll;">
+					<div></div>
+				</div>
+				<div class="row" style="padding-right: 15px">
+					<div class="col-md-10 col-sm-10 col-xs-12" style="padding-right: 0px;">
+						<div id="inputL">
+							<input id="message" autocomplete="off" type="text" class="form-control">
+						</div>
+					</div>
+					<div class="col-md-2 col-xs-2 col-sm-2 hidden-xs" style="padding-right: 0px">
+						<div onclick="send_message()" class="btn btn-success" style="width: 100%;">Send</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript">
+		if (localStorage.user != undefined && localStorage.user != "") {
+			$('#username').val(localStorage.user)
+		}
+		$('#username').keyup(function () {
+			if (localStorage.user != $('#username').val()) {
+				localStorage.user = $('#username').val()
+				socket.emit('send_new_username', localStorage.user);
+			}
+		})
+		$("#message").keypress(function (e) {
+			if (e.which == 13) {
+				send_message();
+			}
+		});
+	</script>
+
+</body>
+
+</html>
